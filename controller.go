@@ -11,17 +11,17 @@ type Controller interface {
     Handle() w32.HWND
     Invalidate(erase bool)
     Parent() Controller
-    Pos() (x, y int)
-    Size() (w, h int)
-    Height() int
-    Width() int
+    Pos() (x, y int32)
+    Size() (w, h int32)
+    Height() int32
+    Width() int32
     Visible() bool
     Bounds() *Rect
     ClientRect() *Rect
     SetCaption(s string)
     SetEnabled(b bool)
-    SetPos(x, y int)
-    SetSize(w, h int)
+    SetPos(x, y int32)
+    SetSize(w, h int32)
     EnableDragAcceptFiles(b bool)
     Show()
     Hide()

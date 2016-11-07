@@ -11,7 +11,7 @@ type W32Control struct {
 	isMouseLeft     bool
 }
 
-func (this *W32Control) init(className string, parent Controller, exstyle, style uint) {
+func (this *W32Control) init(className string, parent Controller, exstyle, style w32.DWORD) {
 	this.hwnd = CreateWindow(className, parent, exstyle, style)
 	if this.hwnd == 0 {
 		panic("cannot create window for " + className)

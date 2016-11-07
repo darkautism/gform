@@ -19,7 +19,7 @@ func NewLabel(parent Controller) *Label {
     return lb
 }
 
-func AttachLabel(parent Controller, id int) *Label {
+func AttachLabel(parent Controller, id int32) *Label {
     lb := new(Label)
     lb.attach(parent, id)
     RegMsgHandler(lb)

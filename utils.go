@@ -29,8 +29,8 @@ func ToggleStyle(hwnd w32.HWND, b bool, style int) {
 	}
 }
 
-func ToggleExStyle(hwnd w32.HWND, b bool, style int) {
-	originalStyle := int(w32.GetWindowLongPtr(hwnd, w32.GWL_EXSTYLE))
+func ToggleExStyle(hwnd w32.HWND, b bool, style int32) {
+	originalStyle := int32(w32.GetWindowLongPtr(hwnd, w32.GWL_EXSTYLE))
 	if originalStyle != 0 {
 		if b {
 			originalStyle |= style
@@ -41,7 +41,7 @@ func ToggleExStyle(hwnd w32.HWND, b bool, style int) {
 	}
 }
 
-func CreateWindow(className string, parent Controller, exStyle, style uint) w32.HWND {
+func CreateWindow(className string, parent Controller, exStyle, style w32.DWORD) w32.HWND {
 	instance := GetAppInstance()
 	var parentHwnd w32.HWND
 	if parent != nil {
@@ -109,7 +109,7 @@ func RegClassOnlyOnce(className string) {
 func ScreenToClientRect(hwnd w32.HWND, rect *w32.RECT) *Rect {
 	l, t, r, b := rect.Left, rect.Top, rect.Right, rect.Bottom
 
-	l1, t1, _ := w32.ScreenToClient(hwnd, int(l), int(t))
-	r1, b1, _ := w32.ScreenToClient(hwnd, int(r), int(b))
+	l1, t1, _ := w32.ScreenToClient(hwnd, l, t)
+	r1, b1, _ := w32.ScreenToClient(hwnd, r, b)
 	return NewRect(l1, t1, r1, b1)
 }

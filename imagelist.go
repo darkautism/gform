@@ -27,11 +27,11 @@ func (this *ImageList) SetImageCount(uNewCount uint) bool {
 	return w32.ImageList_SetImageCount(this.handle, uNewCount)
 }
 
-func (this *ImageList) ImageCount() int {
+func (this *ImageList) ImageCount() int32 {
 	return w32.ImageList_GetImageCount(this.handle)
 }
 
-func (this *ImageList) AddIcon(icon *Icon) int {
+func (this *ImageList) AddIcon(icon *Icon) int32 {
 	return w32.ImageList_AddIcon(this.handle, icon.Handle())
 }
 

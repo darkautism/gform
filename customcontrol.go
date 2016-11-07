@@ -8,7 +8,7 @@ type CustomControl struct {
 	W32Control
 
 	ClassName      string
-	ExStyle, Style uint
+	ExStyle, Style w32.DWORD
 }
 
 func (this *CustomControl) Init(parent Controller) {

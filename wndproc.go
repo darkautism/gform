@@ -28,7 +28,7 @@ func genDropFilesEventArg(wparam uintptr) *DropFilesEventData {
 	_, fileCount := w32.DragQueryFile(hDrop, 0xFFFFFFFF)
 	data.Files = make([]string, fileCount)
 
-	var i uint
+	var i uint32
 	for i = 0; i < fileCount; i++ {
 		data.Files[i], _ = w32.DragQueryFile(hDrop, i)
 	}
@@ -126,5 +126,5 @@ func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
 		return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
 	}
 
-	return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
+	return w32.DefWindowProc(hwnd, msg, wparam, lparam)
 }

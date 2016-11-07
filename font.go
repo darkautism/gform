@@ -19,11 +19,11 @@ func init() {
 type Font struct {
 	hfont     w32.HFONT
 	family    string
-	pointSize int
+	pointSize int32
 	style     byte
 }
 
-func NewFont(family string, pointSize int, style byte) *Font {
+func NewFont(family string, pointSize int32, style byte) *Font {
 	if style > FontBold|FontItalic|FontUnderline|FontStrikeOut {
 		panic("Invalid font style")
 	}
@@ -47,7 +47,7 @@ func NewFont(family string, pointSize int, style byte) *Font {
 	return &font
 }
 
-func (this *Font) createForDPI(dpi int) w32.HFONT {
+func (this *Font) createForDPI(dpi int32) w32.HFONT {
 	var lf w32.LOGFONT
 
 	lf.Height = int32(-w32.MulDiv(this.pointSize, dpi, 72))

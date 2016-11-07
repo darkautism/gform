@@ -36,7 +36,7 @@ func NewPushButton(parent Controller) *PushButton {
     return pb
 }
 
-func AttachPushButton(parent Controller, id int) *PushButton {
+func AttachPushButton(parent Controller, id int32) *PushButton {
     pb := new(PushButton)
     pb.attach(parent, id)
     RegMsgHandler(pb)
@@ -77,7 +77,7 @@ func NewCheckBox(parent Controller) *CheckBox {
     return cb
 }
 
-func AttachCheckBox(parent Controller, id int) *CheckBox {
+func AttachCheckBox(parent Controller, id int32) *CheckBox {
     cb := new(CheckBox)
     cb.attach(parent, id)
     RegMsgHandler(cb)
@@ -105,7 +105,7 @@ func NewRadioButton(parent Controller) *RadioButton {
     return rb
 }
 
-func AttachRadioButton(parent Controller, id int) *RadioButton {
+func AttachRadioButton(parent Controller, id int32) *RadioButton {
     rb := new(RadioButton)
     rb.attach(parent, id)
     RegMsgHandler(rb)
@@ -133,7 +133,7 @@ func NewGroupBox(parent Controller) *GroupBox {
     return gb
 }
 
-func AttachGroupBox(parent Controller, id int) *GroupBox {
+func AttachGroupBox(parent Controller, id int32) *GroupBox {
     gb := new(GroupBox)
     gb.attach(parent, id)
     RegMsgHandler(gb)

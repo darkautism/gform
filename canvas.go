@@ -46,7 +46,7 @@ func (this *Canvas) Dispose() {
 	}
 }
 
-func (this *Canvas) DrawBitmap(bmp *Bitmap, x, y int) {
+func (this *Canvas) DrawBitmap(bmp *Bitmap, x, y int32) {
 	cdc := w32.CreateCompatibleDC(0)
 	defer w32.DeleteDC(cdc)
 
@@ -55,7 +55,7 @@ func (this *Canvas) DrawBitmap(bmp *Bitmap, x, y int) {
 
 	w, h := bmp.Size()
 
-	w32.BitBlt(this.hdc, x, y, w, h, cdc, 0, 0, w32.SRCCOPY)
+	w32.BitBlt(this.hdc, x, y, int32(w), int32(h), cdc, 0, 0, w32.SRCCOPY)
 }
 
 func (this *Canvas) DrawStretchedBitmap(bmp *Bitmap, rect *Rect) {
@@ -68,10 +68,10 @@ func (this *Canvas) DrawStretchedBitmap(bmp *Bitmap, rect *Rect) {
 	w, h := bmp.Size()
 
 	rc := rect.GetW32Rect()
-	w32.StretchBlt(this.hdc, int(rc.Left), int(rc.Top), int(rc.Right), int(rc.Bottom), cdc, 0, 0, w, h, w32.SRCCOPY)
+	w32.StretchBlt(this.hdc, rc.Left, rc.Top, rc.Right, rc.Bottom, cdc, 0, 0, int32(w), int32(h), w32.SRCCOPY)
 }
 
-func (this *Canvas) DrawIcon(ico *Icon, x, y int) bool {
+func (this *Canvas) DrawIcon(ico *Icon, x, y int32) bool {
 	return w32.DrawIcon(this.hdc, x, y, ico.Handle())
 }
 
@@ -84,7 +84,7 @@ func (this *Canvas) DrawRect(rect *Rect, pen *Pen, brush *Brush) {
 	previousBrush := w32.SelectObject(this.hdc, w32.HGDIOBJ(brush.GetHBRUSH()))
 	defer w32.SelectObject(this.hdc, previousBrush)
 
-	w32.Rectangle(this.hdc, int(w32Rect.Left), int(w32Rect.Top), int(w32Rect.Right), int(w32Rect.Bottom))
+	w32.Rectangle(this.hdc, w32Rect.Left, w32Rect.Top, w32Rect.Right, w32Rect.Bottom)
 }
 
 func (this *Canvas) FillRect(rect *Rect, brush *Brush) {
@@ -92,7 +92,7 @@ func (this *Canvas) FillRect(rect *Rect, brush *Brush) {
 }
 
 // Refer win32 DrawText document for uFormat.
-func (this *Canvas) DrawText(text string, rect *Rect, format uint, font *Font, textColor Color) {
+func (this *Canvas) DrawText(text string, rect *Rect, format uint32, font *Font, textColor Color) {
 	previousFont := w32.SelectObject(this.hdc, w32.HGDIOBJ(font.GetHFONT()))
 	defer w32.SelectObject(this.hdc, w32.HGDIOBJ(previousFont))
 
@@ -102,5 +102,5 @@ func (this *Canvas) DrawText(text string, rect *Rect, format uint, font *Font, t
 	previousTextColor := w32.SetTextColor(this.hdc, w32.COLORREF(textColor))
 	defer w32.SetTextColor(this.hdc, previousTextColor)
 
-	w32.DrawText(this.hdc, text, len(text), rect.GetW32Rect(), format)
+	w32.DrawText(this.hdc, text, int32(len(text)), rect.GetW32Rect(), format)
 }

@@ -32,7 +32,7 @@ func NewIconFromResource(instance w32.HINSTANCE, resId uint16) (*Icon, error) {
 	return ico, err
 }
 
-func ExtractIcon(fileName string, index int) (*Icon, error) {
+func ExtractIcon(fileName string, index int32) (*Icon, error) {
 	ico := new(Icon)
 	var err error
 	if ico.handle = w32.ExtractIcon(fileName, index); ico.handle == 0 || ico.handle == 1 {

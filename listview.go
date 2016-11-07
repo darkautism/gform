@@ -24,7 +24,7 @@ func NewListView(parent Controller) *ListView {
 	return lv
 }
 
-func AttachListView(parent Controller, id int) *ListView {
+func AttachListView(parent Controller, id int32) *ListView {
 	lv := new(ListView)
 	lv.attach(parent, id)
 	RegMsgHandler(lv)

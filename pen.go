@@ -6,7 +6,7 @@ import (
 
 type Pen struct {
     hPen  w32.HPEN
-    style uint
+    style uint32
     brush *Brush
 }
 
@@ -34,7 +34,7 @@ func NewNullPen() *Pen {
     return &Pen{hPen: hPen}
 }
 
-func (this *Pen) Style() uint {
+func (this *Pen) Style() uint32 {
     return this.style
 }
 

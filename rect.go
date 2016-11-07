@@ -15,7 +15,7 @@ func NewEmptyRect() *Rect {
 	return &newRect
 }
 
-func NewRect(left, top, right, bottom int) *Rect {
+func NewRect(left, top, right, bottom int32) *Rect {
 	var newRect Rect
 	w32.SetRectEmpty(&newRect.rect)
 	newRect.Set(left, top, right, bottom)

@@ -6,7 +6,7 @@ import (
 
 type RawMsg struct {
     Hwnd           w32.HWND
-    Msg            uint
+    Msg            uint32
     WParam, LParam uintptr
 }
 

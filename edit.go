@@ -20,7 +20,7 @@ func NewEdit(parent Controller) *Edit {
 	return edt
 }
 
-func AttachEdit(parent Controller, id int) *Edit {
+func AttachEdit(parent Controller, id int32) *Edit {
 	edt := new(Edit)
 	edt.attach(parent, id)
 	RegMsgHandler(edt)

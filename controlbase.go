@@ -69,29 +69,28 @@ func (this *ControlBase) Close() {
 	w32.DestroyWindow(this.hwnd)
 }
 
-func (this *ControlBase) SetSize(width, height int) {
+func (this *ControlBase) SetSize(width, height int32) {
 	x, y := this.Pos()
 	w32.MoveWindow(this.hwnd, x, y, width, height, true)
 }
 
-func (this *ControlBase) Size() (width, height int) {
+func (this *ControlBase) Size() (width, height int32) {
 	rect := w32.GetWindowRect(this.hwnd)
-	width = int(rect.Right - rect.Left)
-	height = int(rect.Bottom - rect.Top)
-	return
+	width = rect.Right - rect.Left
+	height = rect.Bottom - rect.Top
 }
 
-func (this *ControlBase) Width() int {
+func (this *ControlBase) Width() int32 {
 	rect := w32.GetWindowRect(this.hwnd)
-	return int(rect.Right - rect.Left)
+	return rect.Right - rect.Left
 }
 
-func (this *ControlBase) Height() int {
+func (this *ControlBase) Height() int32 {
 	rect := w32.GetWindowRect(this.hwnd)
-	return int(rect.Bottom - rect.Top)
+	return rect.Bottom - rect.Top
 }
 
-func (this *ControlBase) SetPos(x, y int) {
+func (this *ControlBase) SetPos(x, y int32) {
 	w, h := this.Size()
 	if w == 0 {
 		w = 100
@@ -102,10 +101,10 @@ func (this *ControlBase) SetPos(x, y int) {
 	w32.MoveWindow(this.hwnd, x, y, w, h, true)
 }
 
-func (this *ControlBase) Pos() (x, y int) {
+func (this *ControlBase) Pos() (x, y int32) {
 	rect := w32.GetWindowRect(this.hwnd)
-	x = int(rect.Left)
-	y = int(rect.Top)
+	x = rect.Left
+	y = rect.Top
 	if !this.isForm && this.parent != nil {
 		x, y, _ = w32.ScreenToClient(this.parent.Handle(), x, y)
 	}
