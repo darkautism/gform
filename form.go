@@ -1,7 +1,7 @@
 package gform
 
 import (
-	"github.com/AllenDang/w32"
+	"github.com/darkautism/w32"
 )
 
 type Form struct {

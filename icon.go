@@ -3,7 +3,7 @@ package gform
 import (
 	"errors"
 	"fmt"
-	"github.com/AllenDang/w32"
+	"github.com/darkautism/w32"
 	"syscall"
 )
 

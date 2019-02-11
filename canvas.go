@@ -2,13 +2,19 @@ package gform
 
 import (
 	"fmt"
-	"github.com/AllenDang/w32"
+
+	"github.com/darkautism/w32"
 )
 
 type Canvas struct {
 	hwnd         w32.HWND
 	hdc          w32.HDC
 	doNotDispose bool
+}
+
+func (this *Canvas) Redraw() error {
+	return w32.RedrawWindow(this.hwnd, nil, 0,
+		w32.RDW_INTERNALPAINT|w32.RDW_INVALIDATE|w32.RDW_UPDATENOW|w32.RDW_ALLCHILDREN)
 }
 
 func NewCanvasFromHwnd(hwnd w32.HWND) *Canvas {

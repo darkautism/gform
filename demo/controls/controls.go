@@ -1,8 +1,8 @@
 package main
 
 import (
-    "github.com/AllenDang/gform"
-    "github.com/AllenDang/w32"
+    "github.com/darkautism/gform"
+    "github.com/darkautism/w32"
 )
 
 var (

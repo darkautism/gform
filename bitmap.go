@@ -2,8 +2,9 @@ package gform
 
 import (
 	"errors"
-	"github.com/AllenDang/w32"
 	"unsafe"
+
+	"github.com/darkautism/w32"
 )
 
 type Bitmap struct {
@@ -11,7 +12,7 @@ type Bitmap struct {
 	width, height int
 }
 
-func assembleBitmapFromHBITMAP(hbitmap w32.HBITMAP) (*Bitmap, error) {
+func NewBitmapFromHBITMAP(hbitmap w32.HBITMAP) (*Bitmap, error) {
 	var dib w32.DIBSECTION
 	if w32.GetObject(w32.HGDIOBJ(hbitmap), unsafe.Sizeof(dib), unsafe.Pointer(&dib)) == 0 {
 		return nil, errors.New("GetObject for HBITMAP failed")
@@ -41,7 +42,7 @@ func NewBitmapFromFile(filepath string, background Color) (*Bitmap, error) {
 		return nil, err
 	}
 
-	return assembleBitmapFromHBITMAP(hbitmap)
+	return NewBitmapFromHBITMAP(hbitmap)
 }
 
 func NewBitmapFromResource(instance w32.HINSTANCE, resName *uint16, resType *uint16, background Color) (*Bitmap, error) {
@@ -77,7 +78,7 @@ func NewBitmapFromResource(instance w32.HINSTANCE, resName *uint16, resType *uin
 		return nil, err
 	}
 
-	return assembleBitmapFromHBITMAP(hbitmap)
+	return NewBitmapFromHBITMAP(hbitmap)
 }
 
 func (this *Bitmap) Dispose() {

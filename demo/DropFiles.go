@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/AllenDang/gform"
+	"github.com/darkautism/gform"
 )
 
 func mainWindow_OnDropFiles(arg *gform.EventArg) {
