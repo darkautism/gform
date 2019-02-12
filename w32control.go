@@ -21,7 +21,7 @@ func (this *W32Control) init(className string, parent Controller, exstyle, style
 	this.ControlBase.init(parent)
 }
 
-func (this *W32Control) attach(parent Controller, dlgItemID int) {
+func (this *W32Control) attach(parent Controller, dlgItemID int32) {
 	if parent == nil {
 		panic("parent cannot be nil")
 	}
@@ -35,7 +35,7 @@ func (this *W32Control) attach(parent Controller, dlgItemID int) {
 	this.ControlBase.init(parent)
 }
 
-func (this *W32Control) WndProc(msg uint, wparam, lparam uintptr) uintptr {
+func (this *W32Control) WndProc(msg uint32, wparam, lparam uintptr) uintptr {
 	switch msg {
 	case w32.WM_CREATE:
 		internalTrackMouseEvent(this.hwnd)

@@ -2,9 +2,10 @@ package gform
 
 import (
 	"fmt"
-	"github.com/darkautism/w32"
 	"syscall"
 	"unsafe"
+
+	"github.com/darkautism/w32"
 )
 
 func internalTrackMouseEvent(hwnd w32.HWND) {
@@ -111,5 +112,5 @@ func ScreenToClientRect(hwnd w32.HWND, rect *w32.RECT) *Rect {
 
 	l1, t1, _ := w32.ScreenToClient(hwnd, l, t)
 	r1, b1, _ := w32.ScreenToClient(hwnd, r, b)
-	return NewRect(l1, t1, r1, b1)
+	return NewRect32(l1, t1, r1, b1)
 }

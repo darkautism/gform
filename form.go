@@ -77,7 +77,7 @@ func (this *Form) EnableTopMost(b bool) {
 	w32.SetWindowPos(this.hwnd, tag, 0, 0, 0, 0, w32.SWP_NOMOVE|w32.SWP_NOSIZE)
 }
 
-func (this *Form) WndProc(msg uint, wparam, lparam uintptr) uintptr {
+func (this *Form) WndProc(msg uint32, wparam, lparam uintptr) uintptr {
 	switch msg {
 	case w32.WM_LBUTTONDOWN:
 		if this.isDragMove {

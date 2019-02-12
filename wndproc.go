@@ -1,7 +1,6 @@
 package gform
 
 import (
-	"log"
 	"unsafe"
 
 	"github.com/darkautism/w32"
@@ -40,13 +39,11 @@ func genDropFilesEventArg(wparam uintptr) *DropFilesEventData {
 	return &data
 }
 
-func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
+func generalWndProc(hwnd w32.HWND, msg uint32, wparam, lparam uintptr) uintptr {
 	if msg == w32.WM_INITDIALOG && gDialogWaiting != nil {
 		gDialogWaiting.hwnd = hwnd
 		RegMsgHandler(gDialogWaiting)
 	}
-	log.Println("hwnd:", hwnd, "msg:", msg)
-	return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
 	if controller := GetMsgHandler(hwnd); controller != nil {
 		var ret uintptr
 		switch msg {
@@ -119,11 +116,11 @@ func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
 				ret = controller.WndProc(msg, wparam, lparam)
 				handler(NewEventArg(controller, &RawMsg{hwnd, msg, wparam, lparam}))
 			} else {
-				//ret = w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
+				ret = w32.DefWindowProc(hwnd, msg, wparam, lparam)
 			}
 		}
 		_ = ret
-		return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
+		return ret
 	}
 
 	return w32.DefWindowProc(hwnd, msg, wparam, lparam)

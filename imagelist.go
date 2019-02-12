@@ -10,7 +10,7 @@ type ImageList struct {
 
 func NewImageList(cx, cy int, flags uint, cInitial, cGrow int) *ImageList {
 	imgl := new(ImageList)
-	imgl.handle = w32.ImageList_Create(cx, cy, flags, cInitial, cGrow)
+	imgl.handle = w32.ImageList_Create(int32(cx), int32(cy), uint32(flags), int32(cInitial), int32(cGrow))
 
 	return imgl
 }
@@ -24,7 +24,7 @@ func (this *ImageList) Destroy() bool {
 }
 
 func (this *ImageList) SetImageCount(uNewCount uint) bool {
-	return w32.ImageList_SetImageCount(this.handle, uNewCount)
+	return w32.ImageList_SetImageCount(this.handle, uint32(uNewCount))
 }
 
 func (this *ImageList) ImageCount() int32 {
@@ -40,5 +40,5 @@ func (this *ImageList) RemoveAll() bool {
 }
 
 func (this *ImageList) Remove(i int) bool {
-	return w32.ImageList_Remove(this.handle, i)
+	return w32.ImageList_Remove(this.handle, int32(i))
 }

@@ -15,7 +15,7 @@ func NewEmptyRect() *Rect {
 	return &newRect
 }
 
-func NewRect(left, top, right, bottom int32) *Rect {
+func NewRect(left, top, right, bottom int) *Rect {
 	var newRect Rect
 	w32.SetRectEmpty(&newRect.rect)
 	newRect.Set(left, top, right, bottom)
@@ -23,11 +23,19 @@ func NewRect(left, top, right, bottom int32) *Rect {
 	return &newRect
 }
 
-func (this *Rect) Data() (left, top, right, bottom int32) {
-	left = this.rect.Left
-	top = this.rect.Top
-	right = this.rect.Right
-	bottom = this.rect.Bottom
+func NewRect32(left, top, right, bottom int32) *Rect {
+	var newRect Rect
+	w32.SetRectEmpty(&newRect.rect)
+	newRect.Set32(left, top, right, bottom)
+
+	return &newRect
+}
+
+func (this *Rect) Data() (left, top, right, bottom int) {
+	left = int(this.rect.Left)
+	top = int(this.rect.Top)
+	right = int(this.rect.Right)
+	bottom = int(this.rect.Bottom)
 	return
 }
 
@@ -36,6 +44,10 @@ func (this *Rect) GetW32Rect() *w32.RECT {
 }
 
 func (this *Rect) Set(left, top, right, bottom int) {
+	w32.SetRect(&this.rect, int32(left), int32(top), int32(right), int32(bottom))
+}
+
+func (this *Rect) Set32(left, top, right, bottom int32) {
 	w32.SetRect(&this.rect, left, top, right, bottom)
 }
 
@@ -44,7 +56,7 @@ func (this *Rect) IsEqual(rect *Rect) bool {
 }
 
 func (this *Rect) Inflate(x, y int) {
-	w32.InflateRect(&this.rect, x, y)
+	w32.InflateRect(&this.rect, int32(x), int32(y))
 }
 
 func (this *Rect) Intersect(src *Rect) {
@@ -56,11 +68,11 @@ func (this *Rect) IsEmpty() bool {
 }
 
 func (this *Rect) Offset(x, y int) {
-	w32.OffsetRect(&this.rect, x, y)
+	w32.OffsetRect(&this.rect, int32(x), int32(y))
 }
 
 func (this *Rect) IsPointIn(x, y int) bool {
-	return w32.PtInRect(&this.rect, x, y)
+	return w32.PtInRect(&this.rect, int32(x), int32(y))
 }
 
 func (this *Rect) Substract(src *Rect) {

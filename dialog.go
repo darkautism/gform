@@ -124,7 +124,7 @@ func (this *Dialog) PreTranslateMessage(msg *w32.MSG) bool {
 	return false
 }
 
-func (this *Dialog) WndProc(msg uint, wparam, lparam uintptr) uintptr {
+func (this *Dialog) WndProc(msg uint32, wparam, lparam uintptr) uintptr {
 	switch msg {
 	case w32.WM_INITDIALOG:
 		gDialogWaiting = nil

@@ -1,9 +1,10 @@
 package gform
 
 import (
-	"github.com/darkautism/w32"
 	"syscall"
 	"unsafe"
+
+	"github.com/darkautism/w32"
 )
 
 func genOFN(parent Controller, title, filter string, filterIndex uint, initialDir string, buf []uint16) *w32.OPENFILENAME {
@@ -76,7 +77,7 @@ func ShowBrowseFolderDlg(parent Controller, title string) (folder string, accept
 	return
 }
 
-func MsgBox(parent Controller, title, caption string, flags uint) int {
+func MsgBox(parent Controller, title, caption string, flags uint32) int {
 	var result int
 	if parent != nil {
 		result = w32.MessageBox(parent.Handle(), caption, title, flags)

@@ -1,147 +1,147 @@
 package gform
 
 import (
-    "github.com/darkautism/w32"
+	"github.com/darkautism/w32"
 )
 
 type Button struct {
-    W32Control
+	W32Control
 }
 
 func (this *Button) Checked() bool {
-    result := w32.SendMessage(this.hwnd, w32.BM_GETCHECK, 0, 0)
-    return result == w32.BST_CHECKED
+	result := w32.SendMessage(this.hwnd, w32.BM_GETCHECK, 0, 0)
+	return result == w32.BST_CHECKED
 }
 
 func (this *Button) SetChecked(checked bool) {
-    wparam := w32.BST_CHECKED
-    if !checked {
-        wparam = w32.BST_UNCHECKED
-    }
-    w32.SendMessage(this.hwnd, w32.BM_SETCHECK, uintptr(wparam), 0)
+	wparam := w32.BST_CHECKED
+	if !checked {
+		wparam = w32.BST_UNCHECKED
+	}
+	w32.SendMessage(this.hwnd, w32.BM_SETCHECK, uintptr(wparam), 0)
 }
 
 type PushButton struct {
-    Button
+	Button
 }
 
 func NewPushButton(parent Controller) *PushButton {
-    pb := new(PushButton)
-    pb.init(parent)
+	pb := new(PushButton)
+	pb.init(parent)
 
-    pb.SetFont(DefaultFont)
-    pb.SetCaption("Button")
-    pb.SetSize(100, 25)
+	pb.SetFont(DefaultFont)
+	pb.SetCaption("Button")
+	pb.SetSize(100, 25)
 
-    return pb
+	return pb
 }
 
 func AttachPushButton(parent Controller, id int32) *PushButton {
-    pb := new(PushButton)
-    pb.attach(parent, id)
-    RegMsgHandler(pb)
+	pb := new(PushButton)
+	pb.attach(parent, id)
+	RegMsgHandler(pb)
 
-    return pb
+	return pb
 }
 
 func (this *PushButton) init(parent Controller) {
-    this.W32Control.init("BUTTON", parent, 0, w32.BS_PUSHBUTTON|w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD)
-    RegMsgHandler(this)
+	this.W32Control.init("BUTTON", parent, 0, w32.BS_PUSHBUTTON|w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD)
+	RegMsgHandler(this)
 }
 
-func (this *PushButton) WndProc(msg uint, wparam, lparam uintptr) uintptr {
-    switch msg {
-    case w32.BN_CLICKED:
-        println("Clicked")
-    case w32.WM_LBUTTONDOWN:
-        w32.SetCapture(this.Handle())
-    case w32.WM_LBUTTONUP:
-        w32.ReleaseCapture()
-    }
+func (this *PushButton) WndProc(msg uint32, wparam, lparam uintptr) uintptr {
+	switch msg {
+	case w32.BN_CLICKED:
+		println("Clicked")
+	case w32.WM_LBUTTONDOWN:
+		w32.SetCapture(this.Handle())
+	case w32.WM_LBUTTONUP:
+		w32.ReleaseCapture()
+	}
 
-    return this.W32Control.WndProc(msg, wparam, lparam)
+	return this.W32Control.WndProc(msg, wparam, lparam)
 }
 
 type CheckBox struct {
-    Button
+	Button
 }
 
 func NewCheckBox(parent Controller) *CheckBox {
-    cb := new(CheckBox)
-    cb.init(parent)
+	cb := new(CheckBox)
+	cb.init(parent)
 
-    cb.SetFont(DefaultFont)
-    cb.SetCaption("CheckBox")
-    cb.SetSize(100, 25)
+	cb.SetFont(DefaultFont)
+	cb.SetCaption("CheckBox")
+	cb.SetSize(100, 25)
 
-    return cb
+	return cb
 }
 
 func AttachCheckBox(parent Controller, id int32) *CheckBox {
-    cb := new(CheckBox)
-    cb.attach(parent, id)
-    RegMsgHandler(cb)
+	cb := new(CheckBox)
+	cb.attach(parent, id)
+	RegMsgHandler(cb)
 
-    return cb
+	return cb
 }
 
 func (this *CheckBox) init(parent Controller) {
-    this.W32Control.init("BUTTON", parent, 0, w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD|w32.BS_AUTOCHECKBOX)
-    RegMsgHandler(this)
+	this.W32Control.init("BUTTON", parent, 0, w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD|w32.BS_AUTOCHECKBOX)
+	RegMsgHandler(this)
 }
 
 type RadioButton struct {
-    Button
+	Button
 }
 
 func NewRadioButton(parent Controller) *RadioButton {
-    rb := new(RadioButton)
-    rb.init(parent)
+	rb := new(RadioButton)
+	rb.init(parent)
 
-    rb.SetFont(DefaultFont)
-    rb.SetCaption("RadioButton")
-    rb.SetSize(100, 25)
+	rb.SetFont(DefaultFont)
+	rb.SetCaption("RadioButton")
+	rb.SetSize(100, 25)
 
-    return rb
+	return rb
 }
 
 func AttachRadioButton(parent Controller, id int32) *RadioButton {
-    rb := new(RadioButton)
-    rb.attach(parent, id)
-    RegMsgHandler(rb)
+	rb := new(RadioButton)
+	rb.attach(parent, id)
+	RegMsgHandler(rb)
 
-    return rb
+	return rb
 }
 
 func (this *RadioButton) init(parent Controller) {
-    this.W32Control.init("BUTTON", parent, 0, w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD|w32.BS_AUTORADIOBUTTON)
-    RegMsgHandler(this)
+	this.W32Control.init("BUTTON", parent, 0, w32.WS_TABSTOP|w32.WS_VISIBLE|w32.WS_CHILD|w32.BS_AUTORADIOBUTTON)
+	RegMsgHandler(this)
 }
 
 type GroupBox struct {
-    Button
+	Button
 }
 
 func NewGroupBox(parent Controller) *GroupBox {
-    gb := new(GroupBox)
-    gb.init(parent)
+	gb := new(GroupBox)
+	gb.init(parent)
 
-    gb.SetFont(DefaultFont)
-    gb.SetCaption("GroupBox")
-    gb.SetSize(100, 100)
+	gb.SetFont(DefaultFont)
+	gb.SetCaption("GroupBox")
+	gb.SetSize(100, 100)
 
-    return gb
+	return gb
 }
 
 func AttachGroupBox(parent Controller, id int32) *GroupBox {
-    gb := new(GroupBox)
-    gb.attach(parent, id)
-    RegMsgHandler(gb)
+	gb := new(GroupBox)
+	gb.attach(parent, id)
+	RegMsgHandler(gb)
 
-    return gb
+	return gb
 }
 
 func (this *GroupBox) init(parent Controller) {
-    this.W32Control.init("BUTTON", parent, 0, w32.WS_CHILD|w32.WS_VISIBLE|w32.WS_GROUP|w32.BS_GROUPBOX)
-    RegMsgHandler(this)
+	this.W32Control.init("BUTTON", parent, 0, w32.WS_CHILD|w32.WS_VISIBLE|w32.WS_GROUP|w32.BS_GROUPBOX)
+	RegMsgHandler(this)
 }

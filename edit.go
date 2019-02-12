@@ -51,7 +51,7 @@ func (this *Edit) AddLine(text string) {
 	}
 }
 
-func (this *Edit) WndProc(msg uint, wparam, lparam uintptr) uintptr {
+func (this *Edit) WndProc(msg uint32, wparam, lparam uintptr) uintptr {
 	switch msg {
 	case w32.WM_COMMAND:
 		switch w32.HIWORD(uint32(wparam)) {
