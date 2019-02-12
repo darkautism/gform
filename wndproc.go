@@ -1,8 +1,10 @@
 package gform
 
 import (
-	"github.com/darkautism/w32"
+	"log"
 	"unsafe"
+
+	"github.com/darkautism/w32"
 )
 
 func genPoint(p uintptr) (x, y int) {
@@ -43,11 +45,13 @@ func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
 		gDialogWaiting.hwnd = hwnd
 		RegMsgHandler(gDialogWaiting)
 	}
-
+	log.Println("hwnd:", hwnd, "msg:", msg)
+	return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
 	if controller := GetMsgHandler(hwnd); controller != nil {
-		ret := controller.WndProc(msg, wparam, lparam)
+		var ret uintptr
 		switch msg {
 		case w32.WM_NOTIFY: //Reflect notification to control
+			ret = controller.WndProc(msg, wparam, lparam)
 			nm := (*w32.NMHDR)(unsafe.Pointer(lparam))
 			if controller := GetMsgHandler(nm.HwndFrom); controller != nil {
 				ret := controller.WndProc(msg, wparam, lparam)
@@ -58,6 +62,7 @@ func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
 			}
 		case w32.WM_COMMAND:
 			if lparam != 0 { //Reflect message to control
+				ret = controller.WndProc(msg, wparam, lparam)
 				h := w32.HWND(lparam)
 				if controller := GetMsgHandler(h); controller != nil {
 					ret := controller.WndProc(msg, wparam, lparam)
@@ -68,42 +73,57 @@ func generalWndProc(hwnd w32.HWND, msg uint, wparam, lparam uintptr) uintptr {
 				}
 			}
 		case w32.WM_CLOSE:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnClose().Fire(NewEventArg(controller, nil))
 		case w32.WM_KILLFOCUS:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnKillFocus().Fire(NewEventArg(controller, nil))
 		case w32.WM_SETFOCUS:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnSetFocus().Fire(NewEventArg(controller, nil))
 		case w32.WM_DROPFILES:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnDropFiles().Fire(NewEventArg(controller, genDropFilesEventArg(wparam)))
 		case w32.WM_LBUTTONDOWN:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnLBDown().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_LBUTTONUP:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnLBUp().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_MBUTTONDOWN:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnMBDown().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_MBUTTONUP:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnMBUp().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_RBUTTONDOWN:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnRBDown().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_RBUTTONUP:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnRBUp().Fire(NewEventArg(controller, genMouseEventArg(wparam, lparam)))
 		case w32.WM_PAINT:
+			ret = controller.WndProc(msg, wparam, lparam)
 			canvas := NewCanvasFromHwnd(hwnd)
 			defer canvas.Dispose()
 			controller.OnPaint().Fire(NewEventArg(controller, &PaintEventData{Canvas: canvas}))
 		case w32.WM_KEYUP:
+			ret = controller.WndProc(msg, wparam, lparam)
 			controller.OnKeyUp().Fire(NewEventArg(controller, &KeyUpEventData{int(wparam), int(lparam)}))
 		case w32.WM_SIZE:
+			ret = controller.WndProc(msg, wparam, lparam)
 			x, y := genPoint(lparam)
 			controller.OnSize().Fire(NewEventArg(controller, &SizeEventData{uint(wparam), x, y}))
+		default:
+			if handler, ok := controller.BindedHandler(msg); ok {
+				ret = controller.WndProc(msg, wparam, lparam)
+				handler(NewEventArg(controller, &RawMsg{hwnd, msg, wparam, lparam}))
+			} else {
+				//ret = w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
+			}
 		}
-
-		//Trigger msg handler registered via "Bind".
-		if handler, ok := controller.BindedHandler(msg); ok {
-			handler(NewEventArg(controller, &RawMsg{hwnd, msg, wparam, lparam}))
-		}
-
-		return ret
+		_ = ret
+		return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
 	}
 
 	return w32.DefWindowProc(hwnd, uint32(msg), wparam, lparam)
